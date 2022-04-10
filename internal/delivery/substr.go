@@ -1,29 +1,10 @@
 package delivery
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"net/http"
-	"text/template"
 )
-
-func (h *Handler) substr(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/rest/substr" {
-		w.WriteHeader(400)
-		return
-	}
-	if r.Method != "GET" {
-		w.WriteHeader(405)
-		return
-	}
-	tmpl, err := template.ParseFiles("./template/substr.html")
-	if err != nil {
-		w.WriteHeader(500)
-		return
-	}
-	if err := tmpl.Execute(w, nil); err != nil {
-		w.WriteHeader(500)
-		return
-	}
-}
 
 func (h *Handler) substrFind(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/rest/substr/find" {
@@ -34,5 +15,20 @@ func (h *Handler) substrFind(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(405)
 		return
 	}
-
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		w.WriteHeader(400)
+		return
+	}
+	var text = Model{}
+	if err := json.Unmarshal(body, &text); err != nil {
+		w.WriteHeader(400)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	text.Text = h.services.Substr.LongestSubstrFind(text.Text)
+	res, _ := json.Marshal(text)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
 }

@@ -18,10 +18,7 @@ func (h *Handler) InitRoutes() *http.ServeMux {
 	mux := http.NewServeMux()
 	//view
 	mux.HandleFunc("/", h.home)
-	//rest
-	mux.HandleFunc("/rest", h.rest)
 	//substr
-	mux.HandleFunc("/rest/substr", h.substr)
 	mux.HandleFunc("/rest/substr/find", h.substrFind)
 
 	return mux
