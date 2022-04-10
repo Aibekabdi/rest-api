@@ -16,10 +16,14 @@ func NewHandler(services *service.Servise) *Handler {
 
 func (h *Handler) InitRoutes() *http.ServeMux {
 	mux := http.NewServeMux()
-	//view
-	mux.HandleFunc("/", h.home)
 	//substr
 	mux.HandleFunc("/rest/substr/find", h.substrFind)
+	//email
+	mux.HandleFunc("/rest/email/check", h.emailCheck)
+	//counter
+	mux.HandleFunc("/rest/counter/add/", h.counterAdd)
+	mux.HandleFunc("/rest/counter/sub/", h.counterSub)
+	mux.HandleFunc("/rest/counter/val/", h.counterVal)
 
 	return mux
 }
