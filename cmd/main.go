@@ -20,7 +20,9 @@ func main() {
 	})
 
 	_, err := client.Ping(context.Background()).Result()
-	log.Fatalf("the redis db has error while connecting: %s", err.Error())
+	if err != nil {
+		log.Fatalf("the redis db has error while connecting: %s", err.Error())
+	}
 	//preparation
 	repos := repository.NewRepository(client)
 	services := service.NewService(repos)

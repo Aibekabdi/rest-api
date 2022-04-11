@@ -23,7 +23,7 @@ func (h *Handler) InitRoutes() *http.ServeMux {
 	//counter
 	mux.HandleFunc("/rest/counter/add/", h.counterAdd)
 	mux.HandleFunc("/rest/counter/sub/", h.counterSub)
-	mux.HandleFunc("/rest/counter/val/", h.counterVal)
+	mux.HandleFunc("/rest/counter/val", h.counterVal)
 
 	return mux
 }

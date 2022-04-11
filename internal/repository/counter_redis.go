@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"strconv"
 
 	"github.com/go-redis/redis/v8"
@@ -19,7 +20,7 @@ func NewCounterRedis(client *redis.Client) *CounterRedis {
 
 func (c *CounterRedis) Add(num string) error {
 	val, err := c.client.Get(ctx, "counter").Result()
-	if err != nil {
+	if err != nil || val == "" {
 		c.client.Set(ctx, "counter", 0, 0)
 	}
 	numValue, err := strconv.Atoi(val)
@@ -37,7 +38,7 @@ func (c *CounterRedis) Add(num string) error {
 
 func (c *CounterRedis) Sub(num string) error {
 	val, err := c.client.Get(ctx, "counter").Result()
-	if err != nil {
+	if err != nil || val == "" {
 		c.client.Set(ctx, "counter", 0, 0)
 	}
 	numValue, err := strconv.Atoi(val)
@@ -48,7 +49,7 @@ func (c *CounterRedis) Sub(num string) error {
 	if err != nil {
 		return err
 	}
-	res := numValue + numAdder
+	res := numValue - numAdder
 	c.client.Set(ctx, "counter", res, 0)
 	return nil
 }
@@ -57,6 +58,9 @@ func (c *CounterRedis) Val() (int, error) {
 	val, err := c.client.Get(ctx, "counter").Result()
 	if err != nil {
 		return 0, err
+	}
+	if val == "" {
+		return 0, errors.New("no value in redis")
 	}
 	res, err := strconv.Atoi(val)
 	if err != nil {

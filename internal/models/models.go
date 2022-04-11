@@ -5,5 +5,9 @@ type SubstrModel struct {
 }
 
 type Email []struct {
-	Email string `json:"email"`
+	Email string `json:"Email"`
+}
+
+type CounterModel struct {
+	Num int `json:"num"`
 }
