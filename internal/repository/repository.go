@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"database/sql"
+
 	"github.com/go-redis/redis/v8"
 )
 
@@ -13,6 +15,6 @@ type Repository struct {
 	Counter
 }
 
-func NewRepository(client *redis.Client) *Repository {
+func NewRepository(client *redis.Client, db *sql.DB) *Repository {
 	return &Repository{Counter: NewCounterRedis(client)}
 }

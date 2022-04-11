@@ -12,6 +12,14 @@ import (
 )
 
 func main() {
+	//sqlite
+	db, err := repository.NewSqliteDB()
+	if err != nil {
+		log.Fatalf("failed to initialize db: %s", err.Error())
+	}
+	if err := repository.CreateTables(db); err != nil {
+		log.Fatalf("failed to creating table: %s", err.Error())
+	}
 	//redis
 	client := redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379",
@@ -19,12 +27,13 @@ func main() {
 		DB:       0,
 	})
 
-	_, err := client.Ping(context.Background()).Result()
+	_, err = client.Ping(context.Background()).Result()
 	if err != nil {
 		log.Fatalf("the redis db has error while connecting: %s", err.Error())
 	}
 	//preparation
-	repos := repository.NewRepository(client)
+
+	repos := repository.NewRepository(client, db)
 	services := service.NewService(repos)
 	handlers := delivery.NewHandler(services)
 	//running server

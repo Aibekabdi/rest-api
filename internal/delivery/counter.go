@@ -23,7 +23,6 @@ func (h *Handler) counterAdd(w http.ResponseWriter, r *http.Request) {
 	if err := h.services.Counter.Add(r.URL.Path[18:]); err != nil {
 		w.Write([]byte(err.Error()))
 	}
-	return
 }
 
 func (h *Handler) counterSub(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +41,6 @@ func (h *Handler) counterSub(w http.ResponseWriter, r *http.Request) {
 	if err := h.services.Counter.Sub(r.URL.Path[18:]); err != nil {
 		w.Write([]byte(err.Error()))
 	}
-	return
 }
 func (h *Handler) counterVal(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
