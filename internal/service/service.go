@@ -5,6 +5,11 @@ import (
 	"github.com/Aibekabdi/rest-api/internal/repository"
 )
 
+type Counter interface {
+	Add(num string) error
+	Sub(num string) error
+	Val() (int, error)
+}
 type Substr interface {
 	LongestSubstrFind(str string) string
 }
@@ -14,11 +19,13 @@ type Email interface {
 type Servise struct {
 	Substr
 	Email
+	Counter
 }
 
-func NewService(repos *repository.Repository) *Servise {
+func NewService(repo *repository.Repository) *Servise {
 	return &Servise{
-		Substr: NewSubstrService(),
-		Email:  NewEmailServise(),
+		Counter: NewCounterService(repo),
+		Substr:  NewSubstrService(),
+		Email:   NewEmailServise(),
 	}
 }
