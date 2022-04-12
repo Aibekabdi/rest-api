@@ -12,7 +12,7 @@ type CounterModel struct {
 	Num int `json:"num"`
 }
 
-type User struct {
+type UserModel struct {
 	Id        int    `json:"id"`
 	Firstname string `json:"first_name"`
 	Lastname  string `json:"last_name"`

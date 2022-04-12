@@ -16,10 +16,14 @@ type Substr interface {
 type Email interface {
 	FindEmails(email models.Email) models.Email
 }
+type User interface {
+	PostUserindb(user models.UserModel) (int, error)
+}
 type Servise struct {
 	Substr
 	Email
 	Counter
+	User
 }
 
 func NewService(repo *repository.Repository) *Servise {
@@ -27,5 +31,6 @@ func NewService(repo *repository.Repository) *Servise {
 		Counter: NewCounterService(repo),
 		Substr:  NewSubstrService(),
 		Email:   NewEmailServise(),
+		User:    NewUserService(repo),
 	}
 }
