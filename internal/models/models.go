@@ -13,7 +13,6 @@ type CounterModel struct {
 }
 
 type UserModel struct {
-	Id        int    `json:"id"`
 	Firstname string `json:"first_name"`
 	Lastname  string `json:"last_name"`
 }

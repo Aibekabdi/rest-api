@@ -18,6 +18,9 @@ type Email interface {
 }
 type User interface {
 	PostUserindb(user models.UserModel) (int, error)
+	GetUser(id int) (models.UserModel, error)
+	PutUser(id int, user models.UserModel) error
+	DeleteUser(id int) error
 }
 type Servise struct {
 	Substr

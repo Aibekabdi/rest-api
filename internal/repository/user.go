@@ -23,3 +23,26 @@ func (u *UserSqlite) PostUserindb(user models.UserModel) (int, error) {
 	id, error := query.LastInsertId()
 	return int(id), error
 }
+
+func (u *UserSqlite) GetUser(id int) (models.UserModel, error) {
+	var user = models.UserModel{}
+	err := u.db.QueryRow("SELECT name, surname FROM User where id = ?", id).Scan(&user.Firstname, &user.Lastname)
+	if err != nil {
+		return user, err
+	}
+	return user, nil
+}
+
+func (u *UserSqlite) PutUser(id int, user models.UserModel) error {
+	if _, err := u.db.Exec("UPDATE User SET name = ?, surname = ? where id = ?", user.Firstname, user.Lastname, id); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UserSqlite) DeleteUser(id int) error {
+	if _, err := u.db.Exec("DELETE FROM User where id = ?", id); err != nil {
+		return err
+	}
+	return nil
+}
